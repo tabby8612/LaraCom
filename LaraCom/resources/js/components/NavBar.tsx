@@ -16,7 +16,7 @@ export default function NavBar() {
     }
 
     return (
-        <nav id="navbar" className="relative flex h-22 items-center justify-between bg-white/40 px-7 shadow">
+        <nav id="navbar" className="sticky top-0 z-999 flex h-22 items-center justify-around bg-white/60 px-7 shadow backdrop-blur-md">
             <div id="logo">
                 <img src={LogoImg} alt="Laracom Logo" className="h-20" />
             </div>
