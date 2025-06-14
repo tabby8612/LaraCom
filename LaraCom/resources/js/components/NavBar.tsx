@@ -3,8 +3,7 @@ import { useState } from 'react';
 import LogoImg from '../assets/logo.png';
 
 export default function NavBar() {
-    const smallScreenClasses =
-        'absolute top-22 left-0 my-auto h-screen rounded bg-white/70 p-5 font-bold opacity-0 transition-opacity delay-150 duration-300';
+    const smallScreenClasses = 'absolute top-22 left-0 my-auto rounded bg-white/70 p-5 font-bold opacity-0 transition-opacity delay-150 duration-300';
     const [mobNav, showMobNav] = useState(false);
 
     function showMenu() {
