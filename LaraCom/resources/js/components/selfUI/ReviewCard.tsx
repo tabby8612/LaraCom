@@ -2,7 +2,7 @@ import { Star } from 'lucide-react';
 
 export default function ReviewCard() {
     return (
-        <div className="my-10 h-[180px] w-[550px] rounded-xl bg-[#cdb4db] px-2 py-2 shadow-[0px_0px_10px_1px_#000]">
+        <div className="mx-auto my-10 h-[180px] w-[30em] rounded-xl bg-[#cdb4db] px-2 py-2 shadow-[0px_0px_10px_1px_#000]">
             <div className="flex">
                 <div className="mr-3 size-16">
                     <img src="https://dpemoji.com/wp-content/uploads/2023/01/Whatsapp-dp-for-boys-57.png" alt="" className="rounded-4xl" />

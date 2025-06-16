@@ -16,7 +16,7 @@ export default function Hero() {
                         Products
                     </a>
                     <a href="#about" className="btn">
-                        About Us
+                        About
                     </a>
                 </div>
             </div>
