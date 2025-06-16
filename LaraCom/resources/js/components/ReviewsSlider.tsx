@@ -14,13 +14,27 @@ export default function ReviewSlider() {
     return (
         <>
             <Swiper
-                slidesPerView={3}
+                slidesPerView={1}
                 centeredSlides={true}
-                spaceBetween={500}
+                spaceBetween={300}
                 navigation={true}
                 modules={[Pagination, Navigation]}
-                className="mySwiper"
+                className="mySwiper my-18"
                 loop
+                breakpoints={{
+                    320: {
+                        slidesPerView: 1,
+                        centeredSlides: true,
+                        spaceBetween: 100,
+                        watchOverflow: true,
+                    },
+                    800: {
+                        slidesPerView: 3,
+                        centeredSlides: true,
+                        spaceBetween: 300,
+                        watchOverflow: true,
+                    },
+                }}
             >
                 <SwiperSlide>
                     <ReviewCard />
