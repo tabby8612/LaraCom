@@ -6,12 +6,13 @@ import Offers from '@/components/Offers';
 import Products from '@/components/Products';
 import ReviewsSection from '@/components/ReviewsSection';
 import { Head } from '@inertiajs/react';
-
-import 'swiper/css';
-import 'swiper/css/navigation';
-import 'swiper/css/pagination';
+import { products } from './data';
 
 export default function Welcome() {
+    function addCartItem(prodID: string) {
+        console.log(prodID);
+    }
+
     return (
         <>
             <Head title="LARACOM" />
@@ -19,7 +20,7 @@ export default function Welcome() {
             <Hero />
             <DownArrow />
             <Offers />
-            <Products />
+            <Products products={products} cartFn={addCartItem} />
             <ReviewsSection />
             <Footer />
         </>
