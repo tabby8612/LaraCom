@@ -9,12 +9,13 @@ type Props = {
     date: string;
     price: string;
     closeFn: () => void;
+    addItemFn: (productId: string) => void;
 };
 
-export default function ProductDialog({ image, name, productId, status, category, date, price, closeFn }: Props) {
+export default function ProductDialog({ image, name, productId, status, category, date, price, closeFn, addItemFn }: Props) {
     return createPortal(
         <div className="fixed inset-0 z-50 flex max-h-full items-center justify-center bg-black/50 pt-20" onClick={closeFn}>
-            <div className="relative mx-5 my-auto rounded-lg bg-white p-6 shadow-[0px_0px_10px_10px_#000]">
+            <div className={`relative mx-5 my-auto rounded-lg bg-white p-6 shadow-[0px_0px_10px_10px_#000] delay-200 duration-300 animate-in`}>
                 <span className="absolute top-2 right-2 cursor-pointer text-gray-500" onClick={closeFn}>
                     X
                 </span>
@@ -51,7 +52,10 @@ export default function ProductDialog({ image, name, productId, status, category
                             </p>
                         </div>
                         <div className="flex flex-col">
-                            <button className="my-2 w-full cursor-pointer rounded-lg border-2 bg-cyan-500 px-4 py-2 font-bold text-white transition-colors delay-150 duration-300 hover:bg-purple-700">
+                            <button
+                                className="my-2 w-full cursor-pointer rounded-lg border-2 bg-cyan-500 px-4 py-2 font-bold text-white transition-colors delay-150 duration-300 hover:bg-purple-700"
+                                onClick={() => addItemFn(productId)}
+                            >
                                 Add to Cart
                             </button>
                             <button className="my-2 w-full cursor-pointer rounded-lg border-2 bg-purple-400 px-4 py-2 font-bold text-white transition-colors delay-150 duration-300 hover:bg-purple-700">

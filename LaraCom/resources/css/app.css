@@ -16,6 +16,7 @@
     --font-Rubik: 'Rubik', sans-serif;
 
     --animate-glow: glow 2s infinite;
+    --animate-nav: line 0.5s forwards;
 
     --radius-lg: var(--radius);
     --radius-md: calc(var(--radius) - 2px);
@@ -77,6 +78,18 @@
 
     50% {
         filter: drop-shadow(0 0 35px #6d389e);
+    }
+}
+
+@keyframes line {
+    0% {
+        width: 0px;
+        left: 50%;
+    }
+
+    100% {
+        width: 100%;
+        left: 0%;
     }
 }
 
@@ -214,4 +227,27 @@ html {
 .btn:hover {
     background-position: 0% 100%;
     transform: scale(1.05);
+}
+
+.custom-btn {
+    width: 180px;
+    color: #fff;
+    border-radius: 5px;
+    padding: 10px 25px;
+    font-family: var(--font-Rubik);
+    font-weight: 600;
+    background: transparent;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    display: inline-block;
+    box-shadow:
+        inset 2px 2px 2px 0px var(--color-purple-700),
+        7px 7px 20px 0px rgba(0, 0, 0, 0.1),
+        4px 4px 5px 0px rgba(0, 0, 0, 0.1);
+    outline: none;
+}
+
+body {
+    background: linear-gradient(to right, #fdd2ff, #bfe0fe), #fdd2ff;
 }

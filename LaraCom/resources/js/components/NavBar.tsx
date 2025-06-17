@@ -1,10 +1,14 @@
+import { CartContext } from '@/pages/welcome';
 import { Menu, ShoppingBasketIcon, SquareUser } from 'lucide-react';
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import LogoImg from '../assets/logo.png';
 
 export default function NavBar() {
     const smallScreenClasses = 'absolute top-22 left-0 my-auto rounded bg-white/70 p-5 font-bold opacity-0 transition-opacity delay-150 duration-300';
+    const navAnimateClasses =
+        'hover:after:absolute hover:after:top-12 hover:after:left-1/2 hover:after:h-1 hover:after:animate-nav hover:after:rounded-xl hover:after:bg-purple-800';
     const [mobNav, showMobNav] = useState(false);
+    const cart = useContext(CartContext);
 
     function showMenu() {
         const nav = document.querySelector('#mobNav') as HTMLDivElement;
@@ -15,7 +19,7 @@ export default function NavBar() {
     }
 
     return (
-        <nav id="navbar" className="sticky top-0 z-999 flex h-22 items-center justify-around bg-white/60 px-7 shadow backdrop-blur-md">
+        <nav id="navbar" className="sticky top-0 z-999 flex h-22 items-center justify-around bg-white/20 px-7 shadow backdrop-blur-md">
             <div id="logo">
                 <img src={LogoImg} alt="Laracom Logo" className="h-20" />
             </div>
@@ -26,23 +30,35 @@ export default function NavBar() {
                     className={`${smallScreenClasses} md:relative md:-top-1 md:flex md:items-center md:justify-center md:gap-12 md:bg-transparent md:opacity-100`}
                 >
                     <ul className="my-auto py-3 font-Rubik text-xl font-semibold md:flex md:gap-7">
-                        <li>
-                            <a href="#">Home</a>
+                        <li className="relative">
+                            <a href="/" className={navAnimateClasses}>
+                                Home
+                            </a>
                         </li>
-                        <li>
-                            <a href="#">About</a>
+                        <li className="relative">
+                            <a href={route('about')} className={navAnimateClasses}>
+                                About
+                            </a>
                         </li>
-                        <li>
-                            <a href="#">Products</a>
+                        <li className="relative">
+                            <a href={route('products')} className={navAnimateClasses}>
+                                Products
+                            </a>
                         </li>
-                        <li>
-                            <a href="#">Contacts</a>
+                        <li className="relative">
+                            <a href={route('contact')} className={navAnimateClasses}>
+                                Contact
+                            </a>
                         </li>
                     </ul>
                     <div className="flex gap-10">
                         <div id="cart" className="relative my-auto md:flex md:flex-col md:items-center md:justify-center">
-                            <div className="absolute bottom-6 size-5 rounded-2xl bg-red-500 text-center text-sm font-bold text-white">0</div>
-                            <ShoppingBasketIcon className="mt-4 size-7 md:my-auto" />
+                            <div className="absolute bottom-6 size-5 rounded-2xl bg-red-500 text-center text-sm font-bold text-white">
+                                {cart?.length}
+                            </div>
+                            <a href={route('cart')}>
+                                <ShoppingBasketIcon className="mt-4 size-7 md:my-auto" />
+                            </a>
                         </div>
                         <SquareUser className="mt-4 text-black md:my-auto" />
                     </div>
