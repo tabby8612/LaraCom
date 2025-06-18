@@ -1,6 +1,5 @@
-import { CartContext } from '@/pages/welcome';
 import { Menu, ShoppingBasketIcon, SquareUser } from 'lucide-react';
-import { useContext, useState } from 'react';
+import { useState } from 'react';
 import LogoImg from '../assets/logo.png';
 
 export default function NavBar() {
@@ -8,7 +7,6 @@ export default function NavBar() {
     const navAnimateClasses =
         'hover:after:absolute hover:after:top-12 hover:after:left-1/2 hover:after:h-1 hover:after:animate-nav hover:after:rounded-xl hover:after:bg-purple-800';
     const [mobNav, showMobNav] = useState(false);
-    const cart = useContext(CartContext);
 
     function showMenu() {
         const nav = document.querySelector('#mobNav') as HTMLDivElement;
@@ -53,14 +51,14 @@ export default function NavBar() {
                     </ul>
                     <div className="flex gap-10">
                         <div id="cart" className="relative my-auto md:flex md:flex-col md:items-center md:justify-center">
-                            <div className="absolute bottom-6 size-5 rounded-2xl bg-red-500 text-center text-sm font-bold text-white">
-                                {cart?.length}
-                            </div>
+                            <div className="absolute bottom-6 size-5 rounded-2xl bg-red-500 text-center text-sm font-bold text-white">0</div>
                             <a href={route('cart')}>
-                                <ShoppingBasketIcon className="mt-4 size-7 md:my-auto" />
+                                <ShoppingBasketIcon className="mt-4 size-7 cursor-pointer md:my-auto" />
                             </a>
                         </div>
-                        <SquareUser className="mt-4 text-black md:my-auto" />
+                        <a href={route('profile')}>
+                            <SquareUser className="mt-4 cursor-pointer text-black md:my-auto" />
+                        </a>
                     </div>
 
                     <div id="viewCount" className="mt-4 text-lg md:mt-0">
