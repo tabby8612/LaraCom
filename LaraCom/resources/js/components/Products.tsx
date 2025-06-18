@@ -6,7 +6,7 @@ import ProductDialog from './selfUI/ProductDialog';
 type Product = {
     image: string;
     name: string;
-    productId: string;
+    productID: string;
     price: string;
     description: string;
     category: 'Headphones' | 'Earbuds' | 'Tablets' | 'Laptops' | 'Mobiles';
@@ -20,6 +20,7 @@ type Props = {
 };
 
 export default function Products({ products, cartFn }: Props) {
+    console.log(products);
     const [productDialog, showProductDialog] = useState<Product | null>(null);
     const [priceFilterBox, showPriceFilterBox] = useState(false);
     const [categoryFilterBox, showCategoryFilterBox] = useState(false);
@@ -44,7 +45,10 @@ export default function Products({ products, cartFn }: Props) {
     }
 
     function showProductDetails(id: string) {
-        const selectedProduct = products.filter((item) => item.productId === id)[0];
+        console.log(id);
+        const selectedProduct = products.filter((item) => item.productID === id)[0];
+        console.log(selectedProduct);
+
         showProductDialog(selectedProduct);
     }
 
@@ -92,9 +96,9 @@ export default function Products({ products, cartFn }: Props) {
                         price={item.price}
                         imgUrl={item.image}
                         status={item.status}
-                        key={item.productId}
-                        productId={item.productId}
-                        productDetailsHandler={() => showProductDetails(item.productId)}
+                        key={item.productID}
+                        productId={item.productID}
+                        productDetailsHandler={() => showProductDetails(item.productID)}
                     />
                 ))}
             </div>
