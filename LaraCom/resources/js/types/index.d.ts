@@ -41,3 +41,14 @@ export interface User {
     updated_at: string;
     [key: string]: unknown; // This allows for additional properties...
 }
+
+export type Product = {
+    image: string;
+    name: string;
+    sku: string;
+    price: string;
+    description: string;
+    category: 'Headphones' | 'Earbuds' | 'Tablets' | 'Laptops' | 'Mobiles';
+    status: 'In Stock' | 'Out of Stock';
+    date: string;
+};

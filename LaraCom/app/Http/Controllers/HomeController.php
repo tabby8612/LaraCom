@@ -10,7 +10,27 @@ class HomeController extends Controller
 {
     //
     public function Home(Request $request) {
-        $products = Products::all();         
+        $productsColl = Products::all();  
+        
+        $products = [];
+
+        
+        foreach($productsColl as $product) {
+            $temp = [
+                "id" => $product->id,
+                "sku" => $product->sku,
+                "name" => $product->name,
+                "price" => $product->price,
+                "description" => $product->description,
+                "image" => $product->image_url,
+                "status" => $product->status ? "In Stock" : "Out of Stock",
+                "date" => $product->created_at->isoFormat("D-M-Y"),
+                "category" => $product->category->name,
+            ];
+
+            $products[] = $temp;
+        }
+
         
 
         return Inertia::render("welcome", [

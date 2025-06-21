@@ -4,8 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
-class ProductsController extends Controller
+class CustomerController extends Controller
 {
+    //
     //
     /**
      * Display a listing of the resource.
@@ -29,6 +30,8 @@ class ProductsController extends Controller
     public function store(Request $request)
     {
         //
+        // dd($request->all());
+        // return true;
     }
 
     /**
@@ -62,5 +65,4 @@ class ProductsController extends Controller
     {
         //
     }
-    
 }

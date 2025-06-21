@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -11,6 +12,10 @@ Route::get("/products", [HomeController::class, "Products"])->name("products");
 Route::get("/contact", [HomeController::class, "Contact"])->name("contact");
 Route::get("/cart", [HomeController::class, "Cart"])->name("cart");
 Route::get("/profile", [HomeController::class, "Profile"])->name("profile");
+
+Route::prefix("api")->group(function() {
+    Route::resource("customers", CustomerController::class);
+});
 
 
 Route::middleware(['auth', 'verified'])->group(function () {
