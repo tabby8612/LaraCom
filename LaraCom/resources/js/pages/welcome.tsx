@@ -5,18 +5,8 @@ import NavBar from '@/components/NavBar';
 import Offers from '@/components/Offers';
 import Products from '@/components/Products';
 import ReviewsSection from '@/components/ReviewsSection';
+import { Product } from '@/types';
 import { Head, usePage } from '@inertiajs/react';
-
-type Product = {
-    image: string;
-    name: string;
-    productID: string;
-    price: string;
-    description: string;
-    category: 'Headphones' | 'Earbuds' | 'Tablets' | 'Laptops' | 'Mobiles';
-    status: 'In Stock' | 'Out of Stock';
-    date: string;
-};
 
 type Props = {
     products: Product[];

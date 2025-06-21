@@ -1,18 +1,8 @@
+import { Product } from '@/types';
 import { useState } from 'react';
 import DropDownMenu from './selfUI/DropDownMenu';
 import ProductCard from './selfUI/ProductCard';
 import ProductDialog from './selfUI/ProductDialog';
-
-type Product = {
-    image: string;
-    name: string;
-    productID: string;
-    price: string;
-    description: string;
-    category: 'Headphones' | 'Earbuds' | 'Tablets' | 'Laptops' | 'Mobiles';
-    status: 'In Stock' | 'Out of Stock';
-    date: string;
-};
 
 type Props = {
     products: Product[];
@@ -46,7 +36,7 @@ export default function Products({ products, cartFn }: Props) {
 
     function showProductDetails(id: string) {
         console.log(id);
-        const selectedProduct = products.filter((item) => item.productID === id)[0];
+        const selectedProduct = products.filter((item) => item.sku === id)[0];
         console.log(selectedProduct);
 
         showProductDialog(selectedProduct);
@@ -96,9 +86,9 @@ export default function Products({ products, cartFn }: Props) {
                         price={item.price}
                         imgUrl={item.image}
                         status={item.status}
-                        key={item.productID}
-                        productId={item.productID}
-                        productDetailsHandler={() => showProductDetails(item.productID)}
+                        key={item.sku}
+                        productId={item.sku}
+                        productDetailsHandler={() => showProductDetails(item.sku)}
                     />
                 ))}
             </div>

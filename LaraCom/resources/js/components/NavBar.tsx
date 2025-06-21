@@ -1,8 +1,13 @@
+import { usePage } from '@inertiajs/react';
 import { Menu, ShoppingBasketIcon, SquareUser } from 'lucide-react';
 import { useState } from 'react';
 import LogoImg from '../assets/logo.png';
 
 export default function NavBar() {
+    const pagesProps = usePage();
+
+    console.log(pagesProps);
+
     const smallScreenClasses = 'absolute top-22 left-0 my-auto rounded bg-white/70 p-5 font-bold opacity-0 transition-opacity delay-150 duration-300';
     const navAnimateClasses =
         'hover:after:absolute hover:after:top-12 hover:after:left-1/2 hover:after:h-1 hover:after:animate-nav hover:after:rounded-xl hover:after:bg-purple-800';
