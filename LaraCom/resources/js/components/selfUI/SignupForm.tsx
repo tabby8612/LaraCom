@@ -9,25 +9,22 @@ type Props = {
 
 export default function SignupForm({ title, formHandlerFn }: Props) {
     const emailRef = useRef<HTMLInputElement | null>(null);
-    const userRef = useRef<HTMLInputElement | null>(null);
+    const nameRef = useRef<HTMLInputElement | null>(null);
     const passwordRef = useRef<HTMLInputElement | null>(null);
 
     function signupHandler() {
-        console.log(emailRef.current?.value);
-        console.log(userRef.current?.value);
-        console.log(passwordRef.current?.value);
+        const customer = {
+            email: emailRef.current?.value,
+            name: nameRef.current?.value,
+            password: passwordRef.current?.value,
+        };
 
-        router.post(
-            route('customers.store'),
-            {
-                email: emailRef.current?.value,
-                user: userRef.current?.value,
-                password: passwordRef.current?.value,
+        router.post(route('customers.store'), customer, {
+            onSuccess: (page) => {
+                console.log(page);
+                return router.get(route('user'));
             },
-            {
-                onSuccess: () => route('home'),
-            },
-        );
+        });
     }
 
     return (
@@ -41,16 +38,18 @@ export default function SignupForm({ title, formHandlerFn }: Props) {
                         name="email"
                         placeholder="Enter Email"
                         className="w-full rounded-xl border-4 border-purple-800 bg-[#ffd2ff] py-2 pr-15 pl-4"
+                        required
                     />
                     <Mail className="absolute top-3 right-5 z-40" />
                 </div>
                 <div className="relative">
                     <input
                         type="text"
-                        name="username"
-                        placeholder="Enter Username"
+                        name="name"
+                        placeholder="Enter name"
                         className="w-full rounded-xl border-4 border-purple-800 bg-[#ffd2ff] py-2 pr-15 pl-4"
-                        ref={userRef}
+                        ref={nameRef}
+                        required
                     />
                     <User className="absolute top-3 right-5 z-40" />
                 </div>
@@ -61,6 +60,7 @@ export default function SignupForm({ title, formHandlerFn }: Props) {
                         placeholder="Enter password"
                         className="w-full rounded-xl border-4 border-purple-800 bg-[#ffd2ff] py-2 pr-15 pl-4"
                         ref={passwordRef}
+                        required
                     />
                     <EyeOff className="absolute top-3 right-5 z-40" />
                 </div>

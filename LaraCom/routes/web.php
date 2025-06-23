@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\HomeController;
+use App\Http\Middleware\IsCustomer;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -16,6 +17,8 @@ Route::get("/profile", [HomeController::class, "Profile"])->name("profile");
 Route::prefix("api")->group(function() {
     Route::resource("customers", CustomerController::class);
 });
+
+Route::middleware(IsCustomer::class)->get("/user", [HomeController::class, "user"])->name("user");
 
 
 Route::middleware(['auth', 'verified'])->group(function () {
