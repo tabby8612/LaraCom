@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Products;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
+use Session;
 
 class HomeController extends Controller
 {
@@ -62,9 +63,19 @@ class HomeController extends Controller
         return Inertia::render("cart");
     }
 
-    public function Profile(Request $request) {        
-
+    public function Profile(Request $request) {   
+        
+        
         return Inertia::render("profile");
+    }
+
+    public function user(Request $request) { 
+        
+        $customer = Session::get("customer");
+
+        return Inertia::render("user", [
+            "customer" => $customer
+        ]);
     }
 
     

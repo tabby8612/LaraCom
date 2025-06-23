@@ -1,20 +1,20 @@
 import { Product } from '@/types';
 import { useState } from 'react';
 import DropDownMenu from './selfUI/DropDownMenu';
+import NotLoggedInDialog from './selfUI/NotLoggedInDialog';
 import ProductCard from './selfUI/ProductCard';
 import ProductDialog from './selfUI/ProductDialog';
 
 type Props = {
     products: Product[];
-    cartFn: (id: string) => void;
 };
 
-export default function Products({ products, cartFn }: Props) {
-    console.log(products);
+export default function Products({ products }: Props) {
     const [productDialog, showProductDialog] = useState<Product | null>(null);
     const [priceFilterBox, showPriceFilterBox] = useState(false);
     const [categoryFilterBox, showCategoryFilterBox] = useState(false);
     const [DateFilterBox, showDateFilterBox] = useState(false);
+    const [isLoggedIn, setLoggedIn] = useState<boolean>(true);
 
     function displayPriceMenuItems() {
         showPriceFilterBox(!priceFilterBox);
@@ -44,6 +44,14 @@ export default function Products({ products, cartFn }: Props) {
 
     function closeDialog() {
         showProductDialog(null);
+    }
+
+    function addCartItem(prodID: string) {
+        console.log(prodID);
+
+        if (!localStorage.getItem('customer')) {
+            setLoggedIn(false);
+        }
     }
 
     return (
@@ -92,7 +100,8 @@ export default function Products({ products, cartFn }: Props) {
                     />
                 ))}
             </div>
-            {productDialog && <ProductDialog {...productDialog} closeFn={closeDialog} addItemFn={cartFn} />}
+            {productDialog && <ProductDialog {...productDialog} closeFn={closeDialog} addItemFn={addCartItem} />}
+            {!isLoggedIn && <NotLoggedInDialog />}
         </div>
     );
 }

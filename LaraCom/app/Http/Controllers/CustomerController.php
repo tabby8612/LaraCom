@@ -2,7 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Customer;
+use DB;
+use Hash;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
+use Session;
 
 class CustomerController extends Controller
 {
@@ -30,8 +35,22 @@ class CustomerController extends Controller
     public function store(Request $request)
     {
         //
-        // dd($request->all());
-        // return true;
+        $customer = [
+            "email" => $request->email,
+            "name" => $request->name,
+            "password" => Hash::make($request->password),
+            "billing_address" => "null",
+            "default_shipping_address" => "null",
+            "country" => "null",
+            "phone" => "null",
+        ];
+
+        DB::table("customers")->insert($customer);
+
+        Session::put("customer", DB::table("customers")->latest()->first());
+        Session::put("message", "Thanks for signing up");
+        
+        return redirect()->route("profile");
     }
 
     /**
@@ -56,6 +75,18 @@ class CustomerController extends Controller
     public function update(Request $request, string $id)
     {
         //
+        
+        if ($request->hasFile("image")) {
+            // handle image upload
+        }
+        
+        $curCustomer = Customer::find($id);
+
+        $curCustomer->update([
+            "password" => Hash::make($request->password)
+        ]);
+
+        return redirect()->route("user");
     }
 
     /**

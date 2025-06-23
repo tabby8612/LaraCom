@@ -15,10 +15,6 @@ type Props = {
 export default function Welcome() {
     const { products } = usePage<Props>().props;
 
-    function addCartItem(prodID: string) {
-        console.log(prodID);
-    }
-
     return (
         <>
             <Head title="LARACOM" />
@@ -26,7 +22,7 @@ export default function Welcome() {
             <Hero />
             <DownArrow />
             <Offers />
-            <Products products={products} cartFn={addCartItem} />
+            <Products products={products} />
             <ReviewsSection />
             <Footer />
         </>
