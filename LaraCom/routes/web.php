@@ -1,8 +1,10 @@
 <?php
 
+use App\Http\Controllers\CartController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\HomeController;
 use App\Http\Middleware\IsCustomer;
+use App\Models\Cart;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -18,7 +20,16 @@ Route::prefix("api")->group(function() {
     Route::resource("customers", CustomerController::class);
 });
 
-Route::middleware(IsCustomer::class)->get("/user", [HomeController::class, "user"])->name("user");
+Route::post("/customer/login", [HomeController::class, "login"])->name("customer.login");
+
+Route::middleware(IsCustomer::class)->group(function() {
+    Route::get("/user", [HomeController::class, "user"])->name("user");
+    Route::get("/logout", [HomeController::class, "logout"])->name("logout");
+    Route::apiResource("/api/cart", CartController::class);
+
+}
+    
+);
 
 
 Route::middleware(['auth', 'verified'])->group(function () {

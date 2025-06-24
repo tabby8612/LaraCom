@@ -1,8 +1,12 @@
+import { Flash } from '@/types';
+import { usePage } from '@inertiajs/react';
 import { Menu, ShoppingBasketIcon, SquareUser } from 'lucide-react';
 import { useState } from 'react';
 import LogoImg from '../assets/logo.png';
 
 export default function NavBar() {
+    const { cart } = usePage().props.flash as Flash;
+
     const smallScreenClasses = 'absolute top-22 left-0 my-auto rounded bg-white/70 p-5 font-bold opacity-0 transition-opacity delay-150 duration-300';
     const navAnimateClasses =
         'hover:after:absolute hover:after:top-12 hover:after:left-1/2 hover:after:h-1 hover:after:animate-nav hover:after:rounded-xl hover:after:bg-purple-800';
@@ -51,7 +55,9 @@ export default function NavBar() {
                     </ul>
                     <div className="flex gap-10">
                         <div id="cart" className="relative my-auto md:flex md:flex-col md:items-center md:justify-center">
-                            <div className="absolute bottom-6 size-5 rounded-2xl bg-red-500 text-center text-sm font-bold text-white">0</div>
+                            <div className="absolute bottom-6 size-5 rounded-2xl bg-red-500 text-center text-sm font-bold text-white">
+                                {cart ? cart.itemsCount : 0}
+                            </div>
                             <a href={route('cart')}>
                                 <ShoppingBasketIcon className="mt-4 size-7 cursor-pointer md:my-auto" />
                             </a>

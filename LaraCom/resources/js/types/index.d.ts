@@ -22,12 +22,31 @@ export interface NavItem {
     isActive?: boolean;
 }
 
+export type Customer = {
+    id: string;
+    name: string;
+    email: string;
+    password: string;
+};
+
+export type Cart = {
+    id: string;
+    itemsCount: string;
+};
+
+export type Flash = {
+    message: string;
+    customer: Customer;
+    cart: Cart;
+};
+
 export interface SharedData {
     name: string;
     quote: { message: string; author: string };
     auth: Auth;
     ziggy: Config & { location: string };
     sidebarOpen: boolean;
+    flash: Flash;
     [key: string]: unknown;
 }
 
@@ -43,6 +62,7 @@ export interface User {
 }
 
 export type Product = {
+    id: string;
     image: string;
     name: string;
     sku: string;

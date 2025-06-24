@@ -17,9 +17,10 @@ type Flash = {
 };
 
 export default function User() {
-    const { customer } = usePage<Flash>().props;
+    const flash = usePage().props.flash as Flash;
     const password = useRef<HTMLInputElement>(null);
     const inputFileRef = useRef<HTMLInputElement | null>(null);
+    const { customer } = flash;
 
     const [changePassword, showChangePassword] = useState(false);
 
@@ -58,6 +59,10 @@ export default function User() {
 
             router.post(route('customers.update', customer.id), formData);
         }
+    }
+
+    function logoutHandler() {
+        return router.get(route('logout'));
     }
 
     return (
@@ -108,7 +113,10 @@ export default function User() {
                 >
                     Reset Password
                 </button>
-                <button className="mt-4 w-3/4 cursor-pointer rounded-md bg-purple-800 py-2 font-bold text-white transition-colors delay-100 duration-300 hover:bg-purple-700">
+                <button
+                    className="mt-4 w-3/4 cursor-pointer rounded-md bg-purple-800 py-2 font-bold text-white transition-colors delay-100 duration-300 hover:bg-purple-700"
+                    onClick={logoutHandler}
+                >
                     Log Out
                 </button>
             </div>

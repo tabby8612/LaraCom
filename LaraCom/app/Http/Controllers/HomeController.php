@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Customer;
 use App\Models\Products;
+
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 use Session;
 
@@ -63,10 +66,14 @@ class HomeController extends Controller
         return Inertia::render("cart");
     }
 
-    public function Profile(Request $request) {   
+    public function Profile(Request $request) {  
         
+        if ($request->session()->has("customer")) {
+            return Inertia::render("user");
+        } else {
+            return Inertia::render("profile");
+        }        
         
-        return Inertia::render("profile");
     }
 
     public function user(Request $request) { 
@@ -76,6 +83,32 @@ class HomeController extends Controller
         return Inertia::render("user", [
             "customer" => $customer
         ]);
+    }
+
+    public function login(Request $request) {
+        // dd($request->all());
+
+        $credentials = [
+            "email" => $request->email,
+            "password" => $request->password
+        ];
+        
+
+        if (Auth::guard("customer")->validate($credentials)) {
+            dd("logged in");
+        }
+
+        dd("not logged in");
+
+    }
+
+    public function logout(Request $request) { 
+        
+        $request->session()->forget("customer");
+        $request->session()->forget("cart");
+
+        return redirect()->route("home");
+        
     }
 
     
