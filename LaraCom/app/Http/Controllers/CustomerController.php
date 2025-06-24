@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Cart;
 use App\Models\Customer;
+use Arr;
 use DB;
 use Hash;
 use Illuminate\Http\Request;
@@ -35,7 +37,7 @@ class CustomerController extends Controller
     public function store(Request $request)
     {
         //
-        $customer = [
+        $userInfo = [
             "email" => $request->email,
             "name" => $request->name,
             "password" => Hash::make($request->password),
@@ -45,9 +47,27 @@ class CustomerController extends Controller
             "phone" => "null",
         ];
 
-        DB::table("customers")->insert($customer);
+        
 
-        Session::put("customer", DB::table("customers")->latest()->first());
+        DB::table("customers")->insert($userInfo);
+
+        $latestCustomer = DB::table("customers")->latest()->first();
+
+        //setting up cart for customer.
+        DB::table("carts")->insert([
+            "customer_id" => $latestCustomer->id
+        ]);
+
+        $customer = Customer::where("id", $latestCustomer->id)->first();
+        $productCount = Cart::find($customer->cart->id)->products()->count();
+        
+        $cart = [
+            "id" => $customer->cart->id,
+            "itemsCount" => $productCount
+        ];
+
+        Session::put("customer", $latestCustomer);
+        Session::put("cart", $cart);
         Session::put("message", "Thanks for signing up");
         
         return redirect()->route("profile");

@@ -48,7 +48,8 @@ class HandleInertiaRequests extends Middleware
             ],
             "flash" => [
                 "message" => $request->session()->get("message"),
-                "customer" => $request->session()->get("customer")
+                "customer" => $request->session()->get("customer"),
+                "cart" => $request->session()->get("cart")
             ],
             'ziggy' => fn (): array => [
                 ...(new Ziggy)->toArray(),

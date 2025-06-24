@@ -1,4 +1,5 @@
-import { Product } from '@/types';
+import { Flash, Product } from '@/types';
+import { router, usePage } from '@inertiajs/react';
 import { useState } from 'react';
 import DropDownMenu from './selfUI/DropDownMenu';
 import NotLoggedInDialog from './selfUI/NotLoggedInDialog';
@@ -15,6 +16,7 @@ export default function Products({ products }: Props) {
     const [categoryFilterBox, showCategoryFilterBox] = useState(false);
     const [DateFilterBox, showDateFilterBox] = useState(false);
     const [isLoggedIn, setLoggedIn] = useState<boolean>(true);
+    const { customer, cart } = usePage().props.flash as Flash;
 
     function displayPriceMenuItems() {
         showPriceFilterBox(!priceFilterBox);
@@ -35,9 +37,7 @@ export default function Products({ products }: Props) {
     }
 
     function showProductDetails(id: string) {
-        console.log(id);
         const selectedProduct = products.filter((item) => item.sku === id)[0];
-        console.log(selectedProduct);
 
         showProductDialog(selectedProduct);
     }
@@ -47,10 +47,20 @@ export default function Products({ products }: Props) {
     }
 
     function addCartItem(prodID: string) {
-        console.log(prodID);
-
-        if (!localStorage.getItem('customer')) {
+        if (!customer) {
             setLoggedIn(false);
+        } else {
+            // customer logged in so provide addT0Cart logic
+            router.put(
+                route('cart.update', cart.id),
+                {
+                    productID: products.filter((item) => item.sku === prodID)[0].id,
+                },
+                {
+                    preserveScroll: true,
+                    preserveState: true,
+                },
+            );
         }
     }
 
