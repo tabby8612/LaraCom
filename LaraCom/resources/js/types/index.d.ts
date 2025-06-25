@@ -40,6 +40,14 @@ export type Flash = {
     cart: Cart;
 };
 
+export type CartProduct = {
+    name: string;
+    image: string;
+    price: string;
+    quantity: string;
+    id: string;
+};
+
 export interface SharedData {
     name: string;
     quote: { message: string; author: string };

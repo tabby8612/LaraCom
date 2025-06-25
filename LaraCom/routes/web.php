@@ -13,7 +13,7 @@ Route::get("/", [HomeController::class, "Home"])->name("home");
 Route::get("/about", [HomeController::class, "About"])->name("about");
 Route::get("/products", [HomeController::class, "Products"])->name("products");
 Route::get("/contact", [HomeController::class, "Contact"])->name("contact");
-Route::get("/cart", [HomeController::class, "Cart"])->name("cart");
+// Route::get("/cart", [HomeController::class, "Cart"])->name("cart");
 Route::get("/profile", [HomeController::class, "Profile"])->name("profile");
 
 Route::prefix("api")->group(function() {
@@ -25,7 +25,8 @@ Route::post("/customer/login", [HomeController::class, "login"])->name("customer
 Route::middleware(IsCustomer::class)->group(function() {
     Route::get("/user", [HomeController::class, "user"])->name("user");
     Route::get("/logout", [HomeController::class, "logout"])->name("logout");
-    Route::apiResource("/api/cart", CartController::class);
+    Route::apiResource("/web/cart", CartController::class);
+    Route::get("/web/cart/{cartID}/{productID}", [CartController::class, "removeProduct"])->name("remove.product");
 
 }
     
