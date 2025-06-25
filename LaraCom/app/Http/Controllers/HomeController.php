@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Cart;
 use App\Models\Customer;
 use App\Models\Products;
 
@@ -61,12 +62,9 @@ class HomeController extends Controller
         ]);
     }
 
-    public function Cart(Request $request) {        
-
-        return Inertia::render("cart");
-    }
-
+    
     public function Profile(Request $request) {  
+        
         
         if ($request->session()->has("customer")) {
             return Inertia::render("user");
@@ -85,8 +83,9 @@ class HomeController extends Controller
         ]);
     }
 
-    public function login(Request $request) {
-        // dd($request->all());
+    public function login(Request $request) {   
+        
+        
 
         $credentials = [
             "email" => $request->email,
@@ -95,10 +94,22 @@ class HomeController extends Controller
         
 
         if (Auth::guard("customer")->validate($credentials)) {
-            dd("logged in");
+            $customer = Customer::where("email", "=", $request->email)->first();
+            $productCount = Cart::find($customer->cart->id)->products()->count();
+
+            $cart = [
+            "id" => $customer->cart->id,
+            "itemsCount" => $productCount
+        ];
+
+            Session::put("customer", $customer);
+            Session::put("cart", $cart);
+            Session::put("message", "Thanks for logging in");
+
+            return redirect()->route("home");
         }
 
-        dd("not logged in");
+        return back()->withErrors(["errMessage" => "Email and Password Combination is Not Correct"]);
 
     }
 

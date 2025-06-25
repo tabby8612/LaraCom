@@ -55,10 +55,13 @@ export default function Products({ products }: Props) {
                 route('cart.update', cart.id),
                 {
                     productID: products.filter((item) => item.sku === prodID)[0].id,
+                    increament: true,
                 },
                 {
                     preserveScroll: true,
                     preserveState: true,
+                    showProgress: false,
+                    onFinish: () => console.log(`product added to cart`),
                 },
             );
         }

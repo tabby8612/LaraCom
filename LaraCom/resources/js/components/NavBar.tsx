@@ -58,7 +58,7 @@ export default function NavBar() {
                             <div className="absolute bottom-6 size-5 rounded-2xl bg-red-500 text-center text-sm font-bold text-white">
                                 {cart ? cart.itemsCount : 0}
                             </div>
-                            <a href={route('cart')}>
+                            <a href={route('cart.index')}>
                                 <ShoppingBasketIcon className="mt-4 size-7 cursor-pointer md:my-auto" />
                             </a>
                         </div>
