@@ -122,5 +122,59 @@ class HomeController extends Controller
         
     }
 
+
+    public function address(Request $request) { 
+
+        $customerID = Session::get("customer")["id"];
+
+        $customer = Customer::findOrFail($customerID); 
+        
+        return Inertia::render("address", [
+            "customer" => $customer
+        ]);
+        
+    }
+
+    public function updateAddress(Request $request) {
+        
+
+        $request->validate([
+            "address" => ["required", "min:20"],
+            "city" => ["min:3"],
+            "pincode" => ["numeric"],
+            "phonenumber" => ["required", "numeric"],
+            "country" => ["required", "min:3"]
+        ]);
+        
+        $customerID = Session::get("customer")["id"];
+
+        $currentCustomer = Customer::findOrFail($customerID);        
+
+        $currentCustomer->update([
+            "billing_address" => "{$request->address}, {$request->city}, {$request->pincode}",
+            "default_shipping_address" => "{$request->address}, {$request->city}, {$request->pincode}",
+            "country" => $request->country,
+            "phone" => $request->phonenumber,
+        ]);
+
+        return to_route("address.index");
+
+    }
+
+
+    public function removeAddress(Request $request, string $customerID) {
+        $customer = Customer::findOrFail($customerID);
+
+        $customer->update([
+            "billing_address" => "",
+            "default_shipping_address" => "",
+            "phone" => "",
+        ]);
+
+        return to_route("address.index");
+    }
+
+
+
     
 }

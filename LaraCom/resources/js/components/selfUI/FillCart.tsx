@@ -35,7 +35,7 @@ export default function FillCart() {
             {
                 preserveScroll: true,
                 preserveState: true,
-                showProgress: false,
+                showProgress: true,
                 onFinish: () => setIsIncreasing(false),
             },
         );
@@ -61,6 +61,10 @@ export default function FillCart() {
         );
     }
 
+    function buyNowHandler() {
+        return router.get(route('address.index'));
+    }
+
     return (
         <div className="mx-auto my-3 flex max-h-full min-h-96 w-10/12 flex-col items-center justify-center gap-7">
             <h1 className="font-Rubik text-5xl font-bold uppercase">Cart</h1>
@@ -81,7 +85,9 @@ export default function FillCart() {
             ))}
             <div className="flex w-full flex-col items-end justify-end gap-5">
                 <h1 className="font-Rubik text-xl font-bold">Total Cart Value: Rs. {sum}</h1>
-                <button className="cursor-pointer rounded-lg border-2 border-purple-900 bg-purple-300 px-4 py-2">Buy Now</button>
+                <button className="cursor-pointer rounded-lg border-2 border-purple-900 bg-purple-300 px-4 py-2" onClick={buyNowHandler}>
+                    Buy Now
+                </button>
             </div>
         </div>
     );

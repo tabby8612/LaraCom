@@ -27,6 +27,9 @@ export type Customer = {
     name: string;
     email: string;
     password: string;
+    billing_address?: string;
+    country?: string;
+    phone?: string;
 };
 
 export type Cart = {
@@ -46,6 +49,7 @@ export type CartProduct = {
     price: string;
     quantity: string;
     id: string;
+    category?: string;
 };
 
 export interface SharedData {
