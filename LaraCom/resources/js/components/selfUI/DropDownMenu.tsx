@@ -1,13 +1,15 @@
 import { ChevronDown } from 'lucide-react';
+import { MouseEvent } from 'react';
 
 type Props = {
     title: string;
     isOpen: boolean;
     clickHandler: () => void;
     menuItems: string[];
+    menuHandler?: (e: MouseEvent<HTMLDivElement>) => void;
 };
 
-export default function DropDownMenu({ title, isOpen, clickHandler, menuItems }: Props) {
+export default function DropDownMenu({ title, isOpen, clickHandler, menuItems, menuHandler }: Props) {
     return (
         <div id="dropdownMenu" className="relative">
             <div
@@ -19,6 +21,7 @@ export default function DropDownMenu({ title, isOpen, clickHandler, menuItems }:
             </div>
             <div
                 className={`absolute top-11 z-40 w-56 rounded-lg bg-purple-300/50 px-3 py-2 backdrop-blur-md transition-all delay-75 duration-250 ease-in ${isOpen ? 'block translate-y-1 opacity-100' : 'hidden translate-y-0 opacity-0'} `}
+                onClick={menuHandler}
             >
                 {menuItems.map((item) => (
                     <div

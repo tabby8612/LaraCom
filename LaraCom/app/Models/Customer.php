@@ -14,6 +14,14 @@ class Customer extends Authenticatable
     //
     protected $guarded = [];
 
+    public function getImageUrlAttribute(){        
+        if (str_contains($this->image, "profiles" )) {
+            return asset('storage/' . $this->image);
+        } else {
+            return asset('storage/products/' . $this->image);
+        }
+}
+
     public function cart(): HasOne {
         return $this->hasOne(Cart::class);
     }

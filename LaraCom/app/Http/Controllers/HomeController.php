@@ -66,7 +66,8 @@ class HomeController extends Controller
     public function Profile(Request $request) {  
         
         
-        if ($request->session()->has("customer")) {
+        if ($request->session()->has("customer")) {                        
+
             return Inertia::render("user");
         } else {
             return Inertia::render("profile");
@@ -76,15 +77,15 @@ class HomeController extends Controller
 
     public function user(Request $request) { 
         
-        $customer = Session::get("customer");
+        $customer = Session::get("customer");   
+        
 
         return Inertia::render("user", [
             "customer" => $customer
         ]);
     }
 
-    public function login(Request $request) {   
-        
+    public function login(Request $request) {          
         
 
         $credentials = [
