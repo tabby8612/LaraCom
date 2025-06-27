@@ -8,6 +8,7 @@ use Arr;
 use DB;
 use Hash;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
 use Session;
 
@@ -36,18 +37,35 @@ class CustomerController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        //        
+        $request->validate([
+            "email" => ["required", "min:5", "email:rfc", "unique:customers,email"],
+            "name" => ["required", "min:2", "max:50"],
+            "password" => ["required", "min:5"],            
+        ]);
+        
+        $path = "profiles/default profile Image.png";
+
+        if (!empty($request->file("image"))) {
+            
+            $request->validate([
+                "image" => ["image"]
+            ]);
+
+            $path = $request->image->store("profiles", "public");            
+            
+        }
+
         $userInfo = [
             "email" => $request->email,
             "name" => $request->name,
             "password" => Hash::make($request->password),
+            "image" => $path,
             "billing_address" => "null",
             "default_shipping_address" => "null",
             "country" => "null",
             "phone" => "null",
-        ];
-
-        
+        ];        
 
         DB::table("customers")->insert($userInfo);
 
@@ -95,12 +113,35 @@ class CustomerController extends Controller
     public function update(Request $request, string $id)
     {
         //
+        $curCustomer = Customer::find($id);
         
         if ($request->hasFile("image")) {
             // handle image upload
+
+            if ($curCustomer->image && Storage::disk("public")->exists($curCustomer->image)) {
+                
+                // deletes image
+                Storage::disk("public")->delete($curCustomer->image);
+
+                // stores new image
+                $path = $request->image->store("profiles", "public");
+
+                // stores path in database
+                $curCustomer->update([
+                    "image" => $path
+                ]);
+
+                $updatedCustomer = Customer::findOrFail($curCustomer->id);
+
+                //update Session For Custoemr Key
+                Session::put("customer", $updatedCustomer);
+                
+
+                return redirect()->route("profile");
+            }
+            
         }
         
-        $curCustomer = Customer::find($id);
 
         $curCustomer->update([
             "password" => Hash::make($request->password)

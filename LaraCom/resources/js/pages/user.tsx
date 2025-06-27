@@ -10,6 +10,7 @@ type Customer = {
     name: string;
     email: string;
     password: string;
+    image: string;
 };
 
 type Flash = {
@@ -52,10 +53,8 @@ export default function User() {
             imagePreview.src = URL.createObjectURL(file);
 
             const formData = new FormData();
-            console.log(formData);
             formData.append('image', file);
             formData.append('_method', 'put');
-            console.log(formData);
 
             router.post(route('customers.update', customer.id), formData);
         }
@@ -71,7 +70,12 @@ export default function User() {
             <NavBar />
             <div className="mx-auto flex max-h-full min-h-96 w-1/2 flex-col items-center justify-between py-24">
                 <div className="relative size-54">
-                    <img id="previewImage" src={ProfileImg} alt="default profile image" className="size-full rounded-full" />
+                    <img
+                        id="previewImage"
+                        src={customer.image ? `/storage/${customer.image}` : ProfileImg}
+                        alt="default profile image"
+                        className="size-full rounded-full"
+                    />
                     <div className="absolute top-5 right-4 cursor-pointer rounded-full bg-white/80 px-2 py-2 shadow-md hover:brightness-90">
                         <PencilIcon className="size-6 cursor-pointer" />
                     </div>
