@@ -76,7 +76,7 @@ class CartController extends Controller
      */
     public function update(Request $request, Cart $cart)
     {
-        //        
+        //                
 
         if ($request->increament) {
             $cart->products()->attach($request->productID);            

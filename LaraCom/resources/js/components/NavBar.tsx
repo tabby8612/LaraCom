@@ -55,7 +55,7 @@ export default function NavBar() {
                     </ul>
                     <div className="flex gap-10">
                         <div id="cart" className="relative my-auto md:flex md:flex-col md:items-center md:justify-center">
-                            <div className="absolute bottom-6 size-5 rounded-2xl bg-red-500 text-center text-sm font-bold text-white">
+                            <div className="absolute bottom-6 z-10 size-5 rounded-2xl bg-red-500 text-center text-sm font-bold text-white">
                                 {cart ? cart.itemsCount : 0}
                             </div>
                             <a href={route('cart.index')}>

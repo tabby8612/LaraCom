@@ -32,6 +32,8 @@ Route::middleware(IsCustomer::class)->group(function() {
     Route::post("/web/address-update", [HomeController::class, "updateAddress"])->name("address.update");
     Route::delete("/web/address-remove/{id}", [HomeController::class, "removeAddress"])->name("address.remove");
     Route::get("/web/confirm-order", [OrderController::class, "index"])->name("order.confirm");
+    Route::post("/web/submit-order", [OrderController::class, "store"])->name("order.submit");
+    Route::get("/web/thank-you", [HomeController::class, "thankYou"])->name("thankyou");
     
 
 }

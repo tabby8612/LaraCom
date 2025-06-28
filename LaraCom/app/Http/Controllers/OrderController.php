@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Cart;
 use App\Models\Customer;
+use App\Models\Order;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Session;
@@ -28,7 +29,8 @@ class OrderController extends Controller
             "phone" => $customer->phone,
         ];
 
-        $customerCart = $customer->cart;
+        $customerCart = $customer->cart;        
+
         $cartProducts = [];
 
         foreach ($customerCart->products as $product) {
@@ -47,6 +49,8 @@ class OrderController extends Controller
                 $cartProducts[$productId]["quantity"]++;
             }
         }
+
+        
         
         $totalCost = 0;
 
@@ -77,6 +81,48 @@ class OrderController extends Controller
     public function store(Request $request)
     {
         //
+        $customerID = Session::get('customer')["id"];        
+
+        // Store Order Information Into Database
+        Order::insert([
+            "amount" => $request->totalAmount,
+            "status" => "To ship",
+            "customer_id" => $customerID
+        ]);
+
+        // Gather Product Ids to attach them into orders_products table
+        $latestOrder = Order::latest()->first();
+
+        $productIDs = [];
+
+        foreach($request->products as $product) {            
+            for ($i = 0; $i < $product["quantity"]; $i++) {
+                $productIDs[] = $product["id"];
+            }
+        }
+
+        $latestOrder->products()->attach($productIDs);
+
+        
+        // After Order Remove These Products From Cart
+        $cart = Customer::find($customerID)->cart;
+        
+
+        $cart->products()->detach($productIDs);
+
+        // Update Item Count In Session.
+        $productCount = $cart->products()->count();
+
+        
+        $updatedCart = [
+            "id" => $cart->id,
+            "itemsCount" => $productCount
+        ];
+
+        Session::put("cart", $updatedCart);
+        
+        return to_route("thankyou");
+        
     }
 
     /**

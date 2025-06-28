@@ -4,7 +4,8 @@ import ConfirmAddress from '@/components/selfUI/ConfirmAddress';
 import ConfirmProductCard from '@/components/selfUI/ConfirmProductCard';
 import FinalPriceConfirmCard from '@/components/selfUI/FinalPriceConfirmCard';
 import { CartProduct } from '@/types';
-import { Head, usePage } from '@inertiajs/react';
+import { Head, router, usePage } from '@inertiajs/react';
+import { MouseEvent } from 'react';
 
 type Props = {
     addressDetails: { address: string; phone: string; country: string };
@@ -15,6 +16,15 @@ type Props = {
 
 export default function ConfirmOrder() {
     const { addressDetails, cartProducts, customerName, totalCartCost } = usePage<Props>().props;
+
+    function submitOrderHandler(e: MouseEvent) {
+        e.preventDefault();
+
+        router.post(route('order.submit'), {
+            totalAmount: totalCartCost,
+            products: cartProducts,
+        });
+    }
 
     return (
         <>
@@ -29,11 +39,11 @@ export default function ConfirmOrder() {
                     <h1 className="mb-6 font-Rubik text-3xl font-bold">Product Details</h1>
                     <div id="products-container" className="w-2xl">
                         {cartProducts.map((product) => (
-                            <ConfirmProductCard product={product} />
+                            <ConfirmProductCard product={product} key={product.id} />
                         ))}
                     </div>
                 </div>
-                <FinalPriceConfirmCard customerName={customerName} totalCartCost={totalCartCost} />
+                <FinalPriceConfirmCard customerName={customerName} totalCartCost={totalCartCost} submitOrder={submitOrderHandler} />
             </div>
 
             <Footer />

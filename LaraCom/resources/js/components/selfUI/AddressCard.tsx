@@ -9,15 +9,17 @@ type Props = {
 
 export default function AddressCard() {
     const { customer } = usePage<Props>().props;
-    console.log(customer.billing_address);
+    console.log(customer.billing_address ? true : false);
     const [editForm, showEditForm] = useState(false);
     const { data, setData, processing, post, transform } = useForm('EditCustomer', {
         name: customer.name,
-        address: 'customer.billing_address',
+        address: customer.billing_address,
         phonenumber: customer.phone,
         email: customer.email,
         country: customer.country,
     });
+
+    console.log(data);
 
     function editFormHandler(e: MouseEvent) {
         e.preventDefault();
@@ -40,7 +42,7 @@ export default function AddressCard() {
 
     function deleteHandler(e: MouseEvent) {
         e.preventDefault();
-
+        showEditForm(false);
         router.delete(route('address.remove', customer.id));
     }
 
@@ -48,7 +50,7 @@ export default function AddressCard() {
         <div id="address-show" className="h-[500px] w-1/2 rounded-md bg-[#cdb4db] px-4 py-3">
             <h1 className="border-2 border-purple-900 py-1 text-center font-Rubik text-3xl font-bold text-[#460b46] uppercase">Select Address</h1>
 
-            {customer.billing_address ? (
+            {customer.billing_address !== 'null' && customer.billing_address !== '' ? (
                 <div id="address" className="my-5 border-2 border-purple-900 px-4 py-3">
                     {editForm ? (
                         <form>
@@ -83,7 +85,7 @@ export default function AddressCard() {
                         <div>
                             <p className="my-2 font-Rubik text-xl font-bold text-purple-950">Name: {customer.name}</p>
                             <p className="my-2 font-Rubik text-xl font-bold text-purple-950">Email: {customer.email}</p>
-                            <p className="my-2 font-Rubik text-xl font-bold text-purple-950">Address: {customer.billing_address}</p>
+                            <p className="my-2 font-Rubik text-xl font-bold text-purple-950">Address: {data.address}</p>
                             <p className="my-2 font-Rubik text-xl font-bold text-purple-950">Phone: {customer.phone}</p>
                             <p className="my-2 font-Rubik text-xl font-bold text-purple-950">Country: {customer.country}</p>
                         </div>
