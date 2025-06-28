@@ -69,14 +69,14 @@ class CustomerController extends Controller
 
         DB::table("customers")->insert($userInfo);
 
-        $latestCustomer = DB::table("customers")->latest()->first();
+        $latestCustomer = Customer::latest()->first();
 
         //setting up cart for customer.
         DB::table("carts")->insert([
             "customer_id" => $latestCustomer->id
         ]);
-
-        $customer = Customer::where("id", $latestCustomer->id)->first();
+        
+        $customer = Customer::find($latestCustomer->id);
         $productCount = Cart::find($customer->cart->id)->products()->count();
         
         $cart = [

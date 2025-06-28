@@ -53,8 +53,27 @@ class HomeController extends Controller
         return Inertia::render("contact");
     }
 
-    public function Products(Request $request) {  
-        $products = Products::all();
+    public function Products(Request $request) {          
+
+        $productsColl = Products::all();  
+        
+        $products = [];
+        
+        foreach($productsColl as $product) {
+            $temp = [
+                "id" => $product->id,
+                "sku" => $product->sku,
+                "name" => $product->name,
+                "price" => $product->price,
+                "description" => $product->description,
+                "image" => $product->image_url,
+                "status" => $product->status ? "In Stock" : "Out of Stock",
+                "date" => $product->created_at->isoFormat("D-M-Y"),
+                "category" => $product->category->name,
+            ];
+
+            $products[] = $temp;
+        }        
         
 
         return Inertia::render("ProductsPage", [
@@ -128,7 +147,8 @@ class HomeController extends Controller
 
         $customerID = Session::get("customer")["id"];
 
-        $customer = Customer::findOrFail($customerID); 
+        $customer = Customer::findOrFail($customerID);       
+        
         
         return Inertia::render("address", [
             "customer" => $customer
@@ -145,7 +165,7 @@ class HomeController extends Controller
             "pincode" => ["numeric"],
             "phonenumber" => ["required", "numeric"],
             "country" => ["required", "min:3"]
-        ]);
+        ]);        
         
         $customerID = Session::get("customer")["id"];
 
@@ -175,6 +195,14 @@ class HomeController extends Controller
         return to_route("address.index");
     }
 
+
+    public function thankYou(Request $request) {
+
+        return Inertia::render("ThankYou");
+    }
+
+
+    
 
 
     
