@@ -1,0 +1,18 @@
+.fi-simple-main-ctn {
+    /* @apply bg-gradient-to-r from-pink-200 to-blue-100; */
+    background-image: linear-gradient(to right, #fdd2ff, #bfe0fe) !important;
+}
+
+.fi-simple-main {
+    @apply w-1/2 rounded-t-2xl border-0 px-0;
+    /* width: calc(1 / 2 * 100%);
+    border-top-left-radius: var(--radius-2xl) !important;
+    border-top-right-radius: var(--radius-2xl) !important;
+    border-style: var(--tw-border-style) !important;
+    border-width: 0px !important;
+    padding-inline: calc(var(--spacing) * 0) !important; */
+}
+
+.fi-sidebar {
+    background-color: white !important;
+}
