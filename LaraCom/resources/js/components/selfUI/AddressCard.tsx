@@ -85,7 +85,7 @@ export default function AddressCard() {
                         <div>
                             <p className="my-2 font-Rubik text-xl font-bold text-purple-950">Name: {customer.name}</p>
                             <p className="my-2 font-Rubik text-xl font-bold text-purple-950">Email: {customer.email}</p>
-                            <p className="my-2 font-Rubik text-xl font-bold text-purple-950">Address: {data.address}</p>
+                            <p className="my-2 font-Rubik text-xl font-bold text-purple-950">Address: {customer.billing_address}</p>
                             <p className="my-2 font-Rubik text-xl font-bold text-purple-950">Phone: {customer.phone}</p>
                             <p className="my-2 font-Rubik text-xl font-bold text-purple-950">Country: {customer.country}</p>
                         </div>

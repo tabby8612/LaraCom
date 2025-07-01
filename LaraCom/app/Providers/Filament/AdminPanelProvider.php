@@ -31,10 +31,13 @@ class AdminPanelProvider extends PanelProvider
             ->path('admin')
             ->brandName("LaraCom Store")
             ->brandLogo("/storage/logo.png")
-            ->brandLogoHeight("80px")            
+            ->sidebarCollapsibleOnDesktop()
+            ->brandLogoHeight("80px")  
+            ->font("Rubik")                                  
             ->login()
             ->colors([
                 'primary' => Color::Purple,
+                'secondary' => Color::Pink
             ])
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\\Filament\\Pages')
@@ -45,6 +48,8 @@ class AdminPanelProvider extends PanelProvider
             ->widgets([
                 Widgets\AccountWidget::class,
                 Widgets\FilamentInfoWidget::class,
+                \APP\Filament\Resources\ProductsResource\Widgets\ProductStats::class,
+                
             ])
             ->middleware([
                 EncryptCookies::class,
