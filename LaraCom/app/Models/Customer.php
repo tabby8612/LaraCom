@@ -15,6 +15,15 @@ class Customer extends Authenticatable
     //
     protected $guarded = [];
 
+    /**
+     * The attributes that should be hidden for serialization.
+     *
+     * @var list<string>
+     */
+    protected $hidden = [
+        'password',        
+    ];
+
     public function getImageUrlAttribute(){        
         if (str_contains($this->image, "profiles" )) {
             return asset('storage/' . $this->image);
