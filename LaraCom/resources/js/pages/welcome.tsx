@@ -5,6 +5,7 @@ import NavBar from '@/components/NavBar';
 import Offers from '@/components/Offers';
 import Products from '@/components/Products';
 import ReviewsSection from '@/components/ReviewsSection';
+import TailingCursor from '@/components/selfUI/TailingCursor';
 import { Product } from '@/types';
 import { Head, usePage } from '@inertiajs/react';
 
@@ -17,6 +18,7 @@ export default function Welcome() {
 
     return (
         <>
+            <TailingCursor />
             <Head title="LARACOM" />
             <NavBar />
             <Hero />

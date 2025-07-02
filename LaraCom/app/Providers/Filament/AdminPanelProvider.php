@@ -32,7 +32,7 @@ class AdminPanelProvider extends PanelProvider
             ->brandName("LaraCom Store")
             ->brandLogo("/storage/logo.png")
             ->sidebarCollapsibleOnDesktop()
-            ->brandLogoHeight("80px")  
+            ->brandLogoHeight("80px")              
             ->font("Rubik")                                  
             ->login()
             ->colors([
@@ -44,11 +44,11 @@ class AdminPanelProvider extends PanelProvider
             ->pages([
                 Pages\Dashboard::class,
             ])
-            ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\\Filament\\Widgets')
-            ->widgets([
-                Widgets\AccountWidget::class,
-                Widgets\FilamentInfoWidget::class,
+            // ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\\Filament\\Widgets')
+            ->widgets([                
                 \APP\Filament\Resources\ProductsResource\Widgets\ProductStats::class,
+                \App\Filament\Widgets\OrdersChart::class,
+                \App\Filament\Widgets\OrdersOverview::class
                 
             ])
             ->middleware([
