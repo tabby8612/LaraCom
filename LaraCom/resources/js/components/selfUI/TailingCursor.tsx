@@ -1,36 +1,77 @@
-import { motion, useMotionValue } from 'motion/react';
-import { useEffect } from 'react';
+import { motion } from 'motion/react';
+import { createRef, useEffect, useRef } from 'react';
+
+const NUM_CIRCLES = 10;
 
 export default function TailingCursor() {
-    const NumberOfCircles = 10;
+    const coords = useRef({ x: 0, y: 0 });
 
-    const baseX = useMotionValue(0);
-    const baseY = useMotionValue(0);
-
-    const circles = Array.from({ length: NumberOfCircles }).map((_, i) => ({
-        x: baseX.set(i * 2),
-        y: baseY.set(i * 2 * 10),
-    }));
+    const circles = useRef(
+        Array.from({ length: NUM_CIRCLES }, () => ({
+            x: 0,
+            y: 0,
+            ref: createRef<HTMLDivElement>(),
+        })),
+    );
 
     useEffect(() => {
-        const handleMouseMove = (e: MouseEvent) => {
-            baseX.set(e.clientX - 12);
-            baseY.set(e.clientY - 12);
+        const handleMouseMove = ({ clientX, clientY }: MouseEvent) => {
+            coords.current.x = clientX;
+            coords.current.y = clientY;
         };
 
-        window.addEventListener('mousemove', handleMouseMove);
+        document.addEventListener('mousemove', handleMouseMove);
 
-        return () => window.removeEventListener('mousemove', handleMouseMove);
-    }, [baseX, baseY]);
+        const animate = () => {
+            const { x, y } = coords.current;
+
+            circles.current.forEach((circle, index) => {
+                const next = circles.current[index - 1] || { x, y };
+
+                circle.x += (next.x - circle.x) * 0.5;
+                circle.y += (next.y - circle.y) * 0.5;
+
+                const el = circle.ref.current;
+
+                if (el) {
+                    const scale = 1 - index * 0.05;
+                    el.style.transform = `translate(${circle.x}px, ${circle.y}px) scale(${scale})`;
+                }
+            });
+
+            requestAnimationFrame(animate);
+        };
+
+        animate();
+
+        return () => document.removeEventListener('mousemove', handleMouseMove);
+    }, []);
 
     return (
         <>
-            {circles.map((circle) => (
-                <motion.div
-                    className="pointer-events-none fixed top-0 left-0 z-9999 h-6 w-6 rounded-full bg-purple-800"
-                    style={{ translateX: circle.x, translateY: circle.y }}
-                ></motion.div>
-            ))}
+            {circles.current.map((circle, i) => {
+                const opacity = 1 - i * 0.08;
+
+                return (
+                    <motion.div
+                        key={i}
+                        ref={circle.ref}
+                        className="pointer"
+                        style={{
+                            position: 'fixed',
+                            top: 0,
+                            left: 0,
+                            width: 24,
+                            height: 24,
+                            borderRadius: '50%',
+                            backgroundColor: 'purple',
+                            pointerEvents: 'none',
+                            zIndex: 99999,
+                            opacity: opacity,
+                        }}
+                    ></motion.div>
+                );
+            })}
         </>
     );
 }
