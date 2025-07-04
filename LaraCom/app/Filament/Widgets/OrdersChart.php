@@ -21,9 +21,12 @@ class OrdersChart extends ChartWidget
 
     protected function getData(): array
     {
-        //Setting Date From 02-June to 02-Jul In Array
-        $startDate = Carbon::parse('2025-06-15')->startOfDay();
-        $endDate = Carbon::parse('2025-07-15')->endOfDay();
+        //Setting Date From today to one month back In Array
+        $today = Carbon::today()->addDay();
+        $oneMonthBack = Carbon::today()->subMonth();
+        
+        $startDate = Carbon::parse($oneMonthBack);        
+        $endDate = Carbon::parse($today); 
 
         $dates = [];
         $currentDate = $startDate;
@@ -33,7 +36,8 @@ class OrdersChart extends ChartWidget
             $currentDate->addDay();
         } 
 
-        $ordersByDate = Order::whereBetween('created_at', ["2025-06-28 15:22:00", "2025-07-02 06:04:45"])
+        // $ordersByDate = Order::whereBetween('created_at', ["2025-06-28 15:22:00", "2025-07-02 06:04:45"])
+        $ordersByDate = Order::whereBetween('created_at', [$oneMonthBack->format("Y-m-d h:00:00"), $today->format("Y-m-d h:00:00")])
         ->select(DB::raw('DATE(created_at) as date'), DB::raw('count(*) as count'))
         ->groupBy('date')
         ->pluck('count', 'date')

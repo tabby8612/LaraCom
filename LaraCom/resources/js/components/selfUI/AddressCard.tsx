@@ -2,6 +2,7 @@ import { Customer } from '@/types';
 import { router, useForm, usePage } from '@inertiajs/react';
 import { Loader } from 'lucide-react';
 import { MouseEvent, useState } from 'react';
+import toast from 'react-hot-toast';
 
 type Props = {
     customer: Customer;
@@ -9,17 +10,14 @@ type Props = {
 
 export default function AddressCard() {
     const { customer } = usePage<Props>().props;
-    console.log(customer.billing_address ? true : false);
     const [editForm, showEditForm] = useState(false);
     const { data, setData, processing, post, transform } = useForm('EditCustomer', {
         name: customer.name,
-        address: customer.billing_address,
-        phonenumber: customer.phone,
+        address: '',
+        phonenumber: '',
         email: customer.email,
         country: customer.country,
     });
-
-    console.log(data);
 
     function editFormHandler(e: MouseEvent) {
         e.preventDefault();
@@ -33,6 +31,12 @@ export default function AddressCard() {
             post(route('address.update'), {
                 onFinish: () => {
                     showEditForm(!editForm);
+                    toast.success(`Address updated successfully`, {
+                        duration: 4000,
+                        position: 'bottom-left',
+                        icon: '👏',
+                        className: 'border-b-4 border-b-green-600 rounded-4xl',
+                    });
                 },
             });
         } else {

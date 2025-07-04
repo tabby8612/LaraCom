@@ -2,9 +2,15 @@ import { Flash } from '@/types';
 import { usePage } from '@inertiajs/react';
 import { Menu, ShoppingBasketIcon, SquareUser } from 'lucide-react';
 import { useState } from 'react';
+import { NumberTicker } from '../../../components/magicui/number-ticker';
 import LogoImg from '../assets/logo.png';
 
+type Props = {
+    visitorCount: string;
+};
+
 export default function NavBar() {
+    const { visitorCount } = usePage<Props>().props;
     const { cart } = usePage().props.flash as Flash;
 
     const smallScreenClasses = 'absolute top-22 left-0 my-auto rounded bg-white/70 p-5 font-bold opacity-0 transition-opacity delay-150 duration-300';
@@ -67,8 +73,15 @@ export default function NavBar() {
                         </a>
                     </div>
 
-                    <div id="viewCount" className="mt-4 text-lg md:mt-0">
-                        View Count: 2000
+                    <div id="viewCount" className="mt-4 text-xl md:mt-0">
+                        View Count:{' '}
+                        {
+                            <NumberTicker
+                                value={+visitorCount}
+                                startValue={+visitorCount - 200}
+                                className="font-Rubik text-2xl font-bold text-purple-800"
+                            />
+                        }
                     </div>
                 </div>
             </div>

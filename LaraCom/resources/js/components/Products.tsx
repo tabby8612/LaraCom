@@ -1,6 +1,7 @@
 import { Flash, Product } from '@/types';
 import { router, usePage } from '@inertiajs/react';
 import { MouseEvent, useState } from 'react';
+import toast from 'react-hot-toast';
 import DropDownMenu from './selfUI/DropDownMenu';
 import NotLoggedInDialog from './selfUI/NotLoggedInDialog';
 import ProductCard from './selfUI/ProductCard';
@@ -42,6 +43,8 @@ export default function Products({ products }: Props) {
     }
 
     function addCartItem(prodID: string) {
+        const selectedProduct = products.filter((item) => item.sku === prodID)[0];
+
         if (!customer) {
             setLoggedIn(false);
         } else {
@@ -49,14 +52,21 @@ export default function Products({ products }: Props) {
             router.put(
                 route('cart.update', cart.id),
                 {
-                    productID: products.filter((item) => item.sku === prodID)[0].id,
+                    productID: selectedProduct.id,
                     increament: true,
                 },
                 {
                     preserveScroll: true,
                     preserveState: true,
                     showProgress: false,
-                    onFinish: () => console.log(`product added to cart`),
+                    onFinish: () => {
+                        toast.success(`${selectedProduct.name} added to cart`, {
+                            duration: 4000,
+                            position: 'bottom-left',
+                            icon: '🛒',
+                            className: 'border-b-4 border-b-green-600 rounded-4xl',
+                        });
+                    },
                 },
             );
         }

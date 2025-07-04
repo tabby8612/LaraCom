@@ -1,6 +1,8 @@
 import Footer from '@/components/Footer';
 import NavBar from '@/components/NavBar';
 import Products from '@/components/Products';
+import ScrollProgress from '@/components/selfUI/ScrollProgress';
+import TailingCursor from '@/components/selfUI/TailingCursor';
 import { Product } from '@/types';
 import { Head, usePage } from '@inertiajs/react';
 
@@ -13,10 +15,13 @@ export default function ProductsPage() {
 
     return (
         <div>
-            <Head title="LARACOM - Products" />
-            <NavBar />
-            <Products products={products} />
-            <Footer />
+            <TailingCursor />
+            <ScrollProgress>
+                <Head title="LARACOM - Products" />
+                <NavBar />
+                <Products products={products} />
+                <Footer />
+            </ScrollProgress>
         </div>
     );
 }
