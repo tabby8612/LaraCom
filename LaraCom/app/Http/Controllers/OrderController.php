@@ -8,10 +8,28 @@ use App\Models\Order;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Session;
+use Storage;
 
 class OrderController extends Controller
 {
     //
+    private function visitorCount() {
+        $updatedCount = 0;
+        
+        if (!session()->exists("visitor")) {
+            
+            $prevCount = Storage::disk("public")->get("visitorcount.txt");            
+            $updatedCount = $prevCount ? (int)$prevCount : 1989;            
+
+            Storage::disk("public")->put("visitorcount.txt", ++$updatedCount);
+
+            session()->put("visitor", true);
+        } else {
+            $updatedCount = Storage::disk("public")->get("visitorcount.txt");
+        }
+
+        return $updatedCount;
+    }
 
     /**
      * Display a listing of the resource.
@@ -62,7 +80,8 @@ class OrderController extends Controller
             "addressDetails" => $customerAddressDetails,
             "cartProducts" => array_values($cartProducts),
             "customerName" => $customer->name,
-            "totalCartCost" => $totalCost
+            "totalCartCost" => $totalCost,
+            "visitorCount" => $this->visitorCount()
 
         ]);
     }

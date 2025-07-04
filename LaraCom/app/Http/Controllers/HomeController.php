@@ -15,12 +15,32 @@ use Storage;
 class HomeController extends Controller
 {
     //
+    private function visitorCount() {
+        $updatedCount = 0;
+        
+        if (!session()->exists("visitor")) {
+            
+            $prevCount = Storage::disk("public")->get("visitorcount.txt");            
+            $updatedCount = $prevCount ? (int)$prevCount : 1989;            
+
+            Storage::disk("public")->put("visitorcount.txt", ++$updatedCount);
+
+            Session::put("visitor", true);            
+        } else {
+            $updatedCount = Storage::disk("public")->get("visitorcount.txt");            
+        }
+
+        return $updatedCount;
+    }
+
     public function Home(Request $request) {
+
+
+        // fetches product from database
         $productsColl = Products::all();  
         
         $products = [];
 
-        
         foreach($productsColl as $product) {
             $temp = [
                 "id" => $product->id,
@@ -37,22 +57,35 @@ class HomeController extends Controller
             $products[] = $temp;
         }
 
-        $offerSlides = Storage::disk("public")->allFiles("offers");
+        // fetches offers slides from storage/offers directory.
+        $offerSlides = Storage::disk("public")->allFiles("offers"); 
+
+        // if customer is logged in then it clears message not on this render but on next render
+        // this ensure if logged in customer revisits the homepage so he will not get loggin message.
+        if (session()->exists("customer")) {
+            session()->remove("message");
+        }
 
         return Inertia::render("welcome", [
             "products" => $products,
-            "offerSlides" => $offerSlides
+            "offerSlides" => $offerSlides,
+            "message" => !session()->exists("visitor") ? "Thanks For Visiting Our Website" : "",
+            "visitorCount" => $this->visitorCount()
         ]);
     }
 
     public function About(Request $request) {        
 
-        return Inertia::render("about");
+        return Inertia::render("about", [
+            "visitorCount" => $this->visitorCount()
+        ]);
     }
 
     public function Contact(Request $request) {        
 
-        return Inertia::render("contact");
+        return Inertia::render("contact", [
+            "visitorCount" => $this->visitorCount()
+        ]);
     }
 
     public function Products(Request $request) {          
@@ -79,7 +112,8 @@ class HomeController extends Controller
         
 
         return Inertia::render("ProductsPage", [
-            "products" => $products
+            "products" => $products,
+            "visitorCount" => $this->visitorCount()
         ]);
     }
 
@@ -89,9 +123,13 @@ class HomeController extends Controller
         
         if ($request->session()->has("customer")) {                        
 
-            return Inertia::render("user");
+            return Inertia::render("user", [
+                "visitorCount" => $this->visitorCount()
+            ]);
         } else {
-            return Inertia::render("profile");
+            return Inertia::render("profile", [
+                "visitorCount" => $this->visitorCount()
+            ]);
         }        
         
     }
@@ -99,10 +137,13 @@ class HomeController extends Controller
     public function user(Request $request) { 
         
         $customer = Session::get("customer");   
+        $message = Session::get("message");
         
 
         return Inertia::render("user", [
-            "customer" => $customer
+            "customer" => $customer,
+            "visitorCount" => $this->visitorCount(),
+            "message" => $message
         ]);
     }
 
@@ -153,7 +194,8 @@ class HomeController extends Controller
         
         
         return Inertia::render("address", [
-            "customer" => $customer
+            "customer" => $customer,
+            "visitorCount" => $this->visitorCount()
         ]);
         
     }
@@ -200,7 +242,9 @@ class HomeController extends Controller
 
     public function thankYou(Request $request) {
 
-        return Inertia::render("ThankYou");
+        return Inertia::render("ThankYou", [
+            "visitorCount" => $this->visitorCount()
+        ]);
     }
 
 

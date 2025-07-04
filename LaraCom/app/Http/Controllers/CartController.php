@@ -8,9 +8,28 @@ use DB;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Session;
+use Storage;
 
 class CartController extends Controller
 {
+    private function visitorCount() {
+        $updatedCount = 0;
+        
+        if (!session()->exists("visitor")) {
+            
+            $prevCount = Storage::disk("public")->get("visitorcount.txt");            
+            $updatedCount = $prevCount ? (int)$prevCount : 1989;            
+
+            Storage::disk("public")->put("visitorcount.txt", ++$updatedCount);
+
+            session()->put("visitor", true);
+        } else {
+            $updatedCount = Storage::disk("public")->get("visitorcount.txt");
+        }
+
+        return $updatedCount;
+    }
+
     /**
      * Display a listing of the resource.
      */
@@ -51,7 +70,8 @@ class CartController extends Controller
 
         
         return Inertia::render("cart", [
-            "products" => $cartProducts
+            "products" => $cartProducts,
+            "visitorCount" => $this->visitorCount()
         ]);
     }
 
