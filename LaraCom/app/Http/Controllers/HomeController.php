@@ -138,7 +138,8 @@ class HomeController extends Controller
         
         $customer = Session::get("customer");   
         $message = Session::get("message");
-        
+
+        dd($customer);        
 
         return Inertia::render("user", [
             "customer" => $customer,
